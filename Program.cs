@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace _3minimuma
 {
+
+
     class Program
     {
         static void Main(string[] args)
@@ -57,6 +59,7 @@ namespace _3minimuma
             }
 
             Console.WriteLine();
+            #region Предполагем что первые 3 значения и есть мин и упорядочиваем их.
             int monthPositivProfit = 0;
             int min = profit[0];
             int min2 = profit[1];
@@ -78,12 +81,14 @@ namespace _3minimuma
                 min3 = min2;
                 min2 = tmp;
             }
-
+            #endregion
+            #region Подсчет кол-ва месяцев с положительными значениями 
             for (int i = 0; i < profit.Length; i++)
             {
                 if (profit[i] > 0) monthPositivProfit++;
             }
-
+            #endregion
+            #region поиск 3х минимальных значений в массиве
             for (int i = 3; i < 12; i++)
             {
 
@@ -106,10 +111,11 @@ namespace _3minimuma
                     continue;
                 }
             }
-
+            #endregion
 
             Console.WriteLine($"\nКол-во месяцев с положительной прибылью: {monthPositivProfit}");
             Console.Write("Худшие месяцы по прибыли: ");
+            #region Вывод месяцев соответствующих мин значениям, включая дубли минимумов
             for (int i = 0; i < profit.Length; i++)
             {
                 if (profit[i] == min || profit[i] == min2 || profit[i] == min3)
@@ -117,8 +123,96 @@ namespace _3minimuma
                     Console.Write($"{i + 1} ");
                 }
             }
-
+            #endregion
             Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("Решение задачи через структуры.");
+            MonthlyRep[] report = new MonthlyRep[12];
+            string[] months = { "January", "February", "March", "April", "May", "June", 
+                "July", "August", "September", "October", "November", "December" }; 
+            
+            report[0] = new MonthlyRep();
+            report[0].Month = months[0];
+            report[0].Income= r.Next(990, 1000) * 1000;
+            report[0].Expenses= r.Next(990, 1000) * 1000;
+            report[0].Profit = report[0].Income - report[0].Expenses;
+            Console.WriteLine();
+            for (int i = 0; i < report.Length; i++)
+            {
+                report[i] = new MonthlyRep();
+                report[i].Month = months[i];
+                report[i].Income = r.Next(900, 1000) * 1000;
+                report[i].Expenses = r.Next(900, 1000) * 1000;
+                report[i].Profit = report[i].Income - report[i].Expenses;
+                
+                Console.WriteLine($"{report[i].Month,9} {report[i].Income,9} {report[i].Expenses,9}  {report[i].Profit,9}");
+            }
+            monthPositivProfit = 0;
+            
+            for (int i = 0; i < report.Length; i++)
+            {
+                if (report[i].Profit >= 0) monthPositivProfit++;
+            }
+            Console.WriteLine($"\nКол-во месяцев с положительной прибылью: {monthPositivProfit}");
+
+            #region Предполагаем что первые три месяца наименьшие по прибыли и выявляем мин и мах. 
+            int smin = report[0].Profit;
+            int smin2 = report[1].Profit;
+            int smin3 = report[2].Profit;
+            if (smin > smin2)
+            {
+                smin2 = report[0].Profit;
+                smin = report[1].Profit;
+            }
+            if (smin > smin3)
+            {
+                int tmp = smin3;
+                smin3 = smin;
+                smin = tmp;
+            }
+            if (smin2 > smin3)
+            {
+                int tmp = smin3;
+                smin3 = smin2;
+                smin2 = tmp;
+            }
+            #endregion
+            #region поиск 3х минимальных значений в массиве
+            for (int i = 3; i < 12; i++)
+            {
+
+                if (smin > report[i].Profit)
+                {
+                    smin3 = smin2;
+                    smin2 = smin;
+                    smin = report[i].Profit;
+                    continue;
+                }
+                if (smin2 > report[i].Profit)
+                {
+                    smin3 = smin2;
+                    smin2 = report[i].Profit;
+                    continue;
+                }
+                if (smin3 > report[i].Profit)
+                {
+                    smin3 = report[i].Profit;
+                    continue;
+                }
+            }
+            #endregion
+            Console.Write("Худшие месяцы по прибыли: ");
+            #region Вывод месяцев соответствующих мин значениям прибыли, включая дубли минимумов
+            for (int i = 0; i < report.Length; i++)
+            {
+                if (report[i].Profit == smin || report[i].Profit == smin2 || report[i].Profit == smin3)
+                {
+                    Console.Write($"{report[i].Month} ");
+                }
+            }
+            #endregion
+            Console.ReadLine();
+
         }
     }
 }
