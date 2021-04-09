@@ -57,6 +57,7 @@ namespace _3minimuma
             }
 
             Console.WriteLine();
+            #region Предполагем что первые 3 значения и есть мин и упорядочиваем их.
             int monthPositivProfit = 0;
             int min = profit[0];
             int min2 = profit[1];
@@ -78,12 +79,14 @@ namespace _3minimuma
                 min3 = min2;
                 min2 = tmp;
             }
-
+            #endregion
+            #region Подсчет кол-ва месяцев с положительными значениями 
             for (int i = 0; i < profit.Length; i++)
             {
                 if (profit[i] > 0) monthPositivProfit++;
             }
-
+            #endregion
+            #region поиск 3х минимальных значений в массиве
             for (int i = 3; i < 12; i++)
             {
 
@@ -106,10 +109,11 @@ namespace _3minimuma
                     continue;
                 }
             }
-
+            #endregion
 
             Console.WriteLine($"\nКол-во месяцев с положительной прибылью: {monthPositivProfit}");
             Console.Write("Худшие месяцы по прибыли: ");
+            #region Вывод месяцев соответствующих мин значениям, включая дубли минимумов
             for (int i = 0; i < profit.Length; i++)
             {
                 if (profit[i] == min || profit[i] == min2 || profit[i] == min3)
@@ -117,7 +121,7 @@ namespace _3minimuma
                     Console.Write($"{i + 1} ");
                 }
             }
-
+            #endregion
             Console.ReadKey();
         }
     }
